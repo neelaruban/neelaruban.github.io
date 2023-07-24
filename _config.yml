@@ -21,8 +21,7 @@
 title: Ruban Writes
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Writing mostly on AWS cloud computing topics and distributing computing topics , at times
-  on various tech related subjects. New GenAI has piqued my interest lately and will be musing about them in the near future
+  I focus on writing about public cloud computing, distributed computing, and other tech-related subjects. Lately, my curiosity has been drawn to New GenAI, and I'll be sharing my insights on this exciting topic soon. Stay tuned!
 baseurl: "" # the subpath of your site, e.g. /blog
 # url: "http://127.0.0.1:4000" # the base hostname & protocol for your site, e.g. http://example.com
 url: "https://me.rubz.xyz"
