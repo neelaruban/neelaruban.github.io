@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "Evolution of a VPC"
+title:  "Evolution of a NetworkHub"
 date:   2023-07-14  16:20:40 +1000
 categories: cloud aws
-image: Initial-Network-Architecture-Chrysos.jpeg
+image: multi-regional-networkhub.png
 ---
 
 this is posts discusses the evolution of a network architecture from a single VPC just connecting to the data centre to a fully fledged multi regional hub and spoke architecture connecting regional remote sites .
@@ -32,8 +32,16 @@ this is posts discusses the evolution of a network architecture from a single VP
 
 #### Initial Design
 
-![image]({{ site.baseurl }}/assets/images/Initial-Network-Architecture-Chrysos.jpeg)
+![image]({{ site.baseurl }}/assets/images/generic_initial.png)
 
 #### Revision
 
-![image]({{ site.baseurl }}/assets/images/architecture-with-ga.jpeg)
+![image]({{ site.baseurl }}/assets/images/generic_with_ga.png)
+
+### Revision II
+
+![image]({{ site.baseurl }}/assets/images/network-hub-palo-alto.png)
+
+### Revision III
+
+![image]({{ site.baseurl }}/assets/images/multi-regional-networkhub.png)
