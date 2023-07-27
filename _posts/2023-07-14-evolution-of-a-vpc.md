@@ -2,8 +2,10 @@
 layout: post
 title:  "Evolution of a NetworkHub"
 date:   2023-07-14  16:20:40 +1000
-categories: cloud aws
+categories: aws
 image: multiregional-network-high-tolerance-hub.png
+slug: Evolution of a NetworkHub
+tags: aws distributed-computing transitgateway networkhub
 ---
 
 In this blog post, we'll talk about how a basic network setup has grown and changed over time. Just from a single VPC connecting to a data centre to a fully fledged multi regional hub and spoke architecture connecting multi regional remote sites .
