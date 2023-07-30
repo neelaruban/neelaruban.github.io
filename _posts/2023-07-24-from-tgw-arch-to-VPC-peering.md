@@ -26,6 +26,11 @@ this could only be possible when there is a default static route table entry poi
 
 This interesting topology where a VPC acting as a bridge between two transit gateways is being discussed in detail in this  [blog](https://www.gilles.cloud/2019/12/aws-transitive-routing-with-transit.html) post from Giles. This architecture was quite sought after if someone wanted to peer TGW from the same region , until recently it was only possible via a bridge VPC .Now the intra regional peering is supported out of box. 
 
+### Intra regional TGW peering via a bridge VPC
+
+![image]({{ site.baseurl }}/assets/images/vpc-bridge-intra-region-tgw-peering.png)
+
+
 
 
 ***How could we avert any possibility of mistakes happening in the future , meaning how to achieve fail proof ?***
