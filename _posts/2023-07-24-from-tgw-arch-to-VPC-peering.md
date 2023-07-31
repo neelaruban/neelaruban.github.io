@@ -52,6 +52,8 @@ VPC peering is an ideal solution for a problem statement such as this , which is
 
 Besides , not so very recently AWS announced all data transfer over a VPC Peering connection that stays within an Availability Zone (AZ) are going to be free. Which is a great news for VPC peering users as TGW is an expensive service as means to the same end . 
 
+> some interesting scoop for you ,the same aforementioned customer was able to save around 120 000 USD per year by switching into this topology .
+
 Only constraint is that you could have peering connections upto 50 for a VPC and could adjusted upto 125 connections but it still gives you the ability to work with 125 different data plane VPCs ( as many different customers in this case )
 
 if the company is scaling too fast and if they feel like they going to exhaust the limits soon they could certainly have a new control plane VPC and as many data plane VPCs. This gives them redundancy and some sort of partioning of their control plane with little to no marginal cost. 

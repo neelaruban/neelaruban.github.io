@@ -4,7 +4,7 @@ title:  "Evolution of a NetworkHub"
 date:   2023-07-14  16:20:40 +1000
 categories: aws
 image: multiregional-network-high-tolerance-hub.png
-slug: Evolution of a NetworkHub
+slug: evolution of a network-hub
 tags: aws distributed-computing transitgateway networkhub
 ---
 
