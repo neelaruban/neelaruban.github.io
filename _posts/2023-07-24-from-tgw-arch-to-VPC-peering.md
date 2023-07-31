@@ -4,6 +4,8 @@ title:  "VPC Peering is still your friend"
 date:   2023-07-24  17:27:11 +1000
 categories: aws
 image: vpc-peering.png
+slug: vpc peering is still your friend
+tags: aws transitgateway vpc-peering
 ---
 
 I once worked with a customer who had an interesting networking topology. They had a multi VPC hub and spoke network with around forty VPCs connected to a TGW (Transit Gateway) . The purpose of the TGW was to connect to a specific VPC that held the control plane, which managed the data plane in the other VPCs. 
