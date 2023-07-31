@@ -3,7 +3,7 @@ layout: post
 title:  "VPC Peering is still your friend"
 date:   2023-07-24  17:27:11 +1000
 categories: aws
-image: vpc-peering.png
+image: /assets/images/vpc-peering.png
 slug: vpc peering is still your friend
 tags: aws transitgateway vpc-peering
 ---
