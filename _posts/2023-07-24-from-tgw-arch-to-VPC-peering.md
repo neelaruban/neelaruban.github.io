@@ -28,7 +28,7 @@ This interesting topology where a VPC acting as a bridge between two transit gat
 
 ### Intra regional TGW peering via a bridge VPC
 
-![image]({{ site.baseurl }}/assets/images/vpc-bridge-intra-region-tgw-peering.png)
+![image]({{ site.baseurl }}/assets/images/vpc-bridge-tgw-peering.png)
 
 
 
