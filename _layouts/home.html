@@ -32,7 +32,7 @@ layout: base
           </a>
         </h3>
       {%- if post.image -%}
-        <img src="{{ site.baseurl }}/assets/images/{{ post.image }}" width="400" height="360">
+        <img src="{{ site.baseurl }}{{ post.image }}" width="400" height="360">
       {%- endif -%}
         {%- if site.show_excerpts -%}
           {{ post.excerpt }}
