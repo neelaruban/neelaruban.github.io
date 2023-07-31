@@ -77,7 +77,3 @@ Due to security and cost optimisation considerations, an egress VPC for each reg
 ## Conclusion
 
 In simpler terms, We added an extra layer of protection to their cloud setup by bringing on another cloud provider between regional sites to AWS and also by opting in for AWS regional redundancy by way of a multi-regional network hub, making it more reliable, fault-tolerant and redundant. This way, if one part of the system fails, it doesn't bring down everything else with it. It's like having a backup plan for when things don't go as expected. This design transformation helps ensure a smoother and safer cloud experience overall.
-
-
-
-

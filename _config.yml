@@ -48,6 +48,22 @@ google_analytics: G-Q0X9FZXBYS
 show_excerpts: true
 
 
+twitter:
+  username: suseendran
+  card: summary
+
+author:
+  twitter: suseendran
+
+social:
+  name: Ruban Suthan
+  links:
+    - https://twitter.com/suseendran
+    - https://www.facebook.com/
+    - https://www.linkedin.com/in/\
+    - https://github.com/benbalter
+    - https://keybase.io/benbalter
+
 permalink: /:categories/:title/
 # Exclude from processing.
 # The following items will not be processed, by default.
