@@ -64,6 +64,10 @@ social:
     - https://github.com/benbalter
     - https://keybase.io/benbalter
 
+
+image:
+  path: /assets/images/
+
 permalink: /:categories/:title/
 # Exclude from processing.
 # The following items will not be processed, by default.
