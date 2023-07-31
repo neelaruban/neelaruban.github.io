@@ -8,60 +8,47 @@ slug: vpc peering is still your friend
 tags: aws transitgateway vpc-peering
 ---
 
-I once worked with a customer who had an interesting networking topology. They had a multi VPC hub and spoke network with around forty VPCs connected to a TGW (Transit Gateway) . The purpose of the TGW was to connect to a specific VPC that held the control plane, which managed the data plane in the other VPCs. 
+I once worked with a customer who had an intriguing networking topology. They had a multi VPC hub and spoke network, with approximately forty VPCs connected to a Transit Gateway (TGW). The purpose of the TGW was to link to a specific VPC that held the control plane, managing the data planes in the other VPCs.
 
-Only the control plane VPC should be able to connect to the data planes in each VPCs but there should not be any connectivity between data planes as each data plane VPC is customer specific part of a multi customer SAAS model . Further, each of the data plane VPC is connected to another transit gateway from the customer side, which we cover later.In essence, it forms a sort of maze-like structure.
+Only the control plane VPC should be able to connect to the data planes in each VPC, while no direct connectivity should exist between data planes. Each data plane VPC is tailored to a specific customer as part of a multi-customer SAAS model. Additionally, each data plane VPC connects to another transit gateway from the customer's side (we'll cover this later), creating a maze-like structure.
 
-to illustrate my description let me give you the architecture diagram of it 
+To illustrate, here's the architecture diagram:
 
 ![image]({{ site.baseurl }}/assets/images/vpc-peering-topology.png)
 
-TGW automatically comes with a default route table. By default, this route table is the default association route table and the default propagation route table. Unfortunately the Customer has not opted out of this setting resulting in any VPCs attached to the TGW gaining access to each of the VPCs attached to it. 
+TGW automatically comes with a default route table, which, by default, serves as the default association and propagation route table. Unfortunately, the customer didn't opt out of this setting, resulting in any VPCs attached to the TGW gaining access to all other attached VPCs, raising significant security concerns.
 
-This is big red flag enabling any customer side VPC gaining a free pass to rest of the customer side VPCs . 
+This is a major concern as it grants any customer-side VPC unrestricted access to other customer-side VPCs.
 
-include a gif depicting a massive blow 
+Another crucial aspect to consider is that any customer-side data plane VPC could act as a bridge between the main TGW (TGW A) and the customer-side of the TGW (TGW B). While this is possible with a default static route table entry pointing to a data plane VPC attachment from both transit gateways, it's also just one mistake away from causing potential issues. A robust architectural design should eliminate any room for such mistakes in the future.
 
-Another important thing to notice here is that any customer side data plane VPC could act as a *_ bridge VPC_* between the main TGW ( TGW A from the picture ) and the customer side of the TGW ( TGW B from the picture ). 
+The concept of a VPC acting as a bridge between two transit gateways is discussed in detail in this blog post from Giles: [AWS Transitive Routing with Transit Gateway](https://www.gilles.cloud/2019/12/aws-transitive-routing-with-transit.html). This architecture was sought after for peering TGWs from the same region until recently, when intra-regional peering became supported out of the box.
 
-this could only be possible when there is a default static route table entry pointing to a data plane VPC attachment from both Transit gateways, then a again its just a mistake a away from being one. A good architectural design should not leave room for any mistakes happening in the future.
-
-This interesting topology where a VPC acting as a bridge between two transit gateways is being discussed in detail in this  [blog](https://www.gilles.cloud/2019/12/aws-transitive-routing-with-transit.html) post from Giles. This architecture was quite sought after if someone wanted to peer TGW from the same region , until recently it was only possible via a bridge VPC .Now the intra regional peering is supported out of box. 
-
-### Intra regional TGW peering via a bridge VPC
+### Intra-Regional TGW Peering via a Bridge VPC
 
 ![image]({{ site.baseurl }}/assets/images/vpc-bridge-tgw-peering.png)
 
+***How can we prevent potential mistakes in the future and achieve a fail-proof solution?***
 
+While complete fail-proofing is practically impossible, we can minimize exposure to downsides. The solution lies in a simple answer to this complex problem: VPC peering.
 
+VPC peering is an ideal solution for this problem statement, which includes:
 
-***How could we avert any possibility of mistakes happening in the future , meaning how to achieve fail proof ?***
+1. Centralized control plane communicating bidirectionally with data planes.
+2. Data planes should not communicate with each other strictly since they belong to different perimeters.
+3. Introducing a new data plane should easily scale and provide effortless connectivity between both.
+4. Data plane instances should only accept ingress traffic from the control plane.
 
-practically , complete fail proof is impossible but we could reduce the exposure to the downside to the minimal . 
+Moreover, AWS recently announced that all data transfers over a VPC peering connection within an Availability Zone (AZ) would be free. This is great news for VPC peering users, as TGW can be an expensive alternative for achieving the same end.
 
-There is always a simple solution for a complex problem such as this , bring on our old friend *VPC peering*
+> Interesting scoop: The aforementioned customer was able to save around 120,000 USD per year by adopting this topology.
 
-VPC peering is an ideal solution for a problem statement such as this , which is as follows  
+The only constraint is that you can have up to 50 peering connections for a VPC, extendable up to 125 connections, allowing you to work with 125 different data plane VPCs (representing different customers in this case). If the company is rapidly scaling and expects to exhaust the limits soon, they can create a new control plane VPC along with as many data plane VPCs. This provides redundancy and partitioning of their control plane at little to no marginal cost.
 
-## Problem Statement
+> Transit Gateway costs come in two parts: TGW attachment costs (billed hourly) and data transfer costs, whether between the same AZ or inter AZ. Peering does not carry any hourly attachment costs.
 
-1. Centralised control plane communicating bi directionaly to the data planes. 
-2. In this case data planes should not strictly talk to each other because they belong to different perimeters.
-3. Any new introduction of a data plane should easily scale and provide connectivity between both effortlessly. 
-4. Data plane instances should be able to limit the ingress traffic to nothing but only from the control plane .
+Peering is also ideal for referencing the source security groups from the peered VPC for inbound and outbound security group rules. The peered VPC can be in the same account or from a different account, making it a versatile and powerful solution.
 
-Besides , not so very recently AWS announced all data transfer over a VPC Peering connection that stays within an Availability Zone (AZ) are going to be free. Which is a great news for VPC peering users as TGW is an expensive service as means to the same end . 
+## Conclusion
 
-> some interesting scoop for you ,the same aforementioned customer was able to save around 120 000 USD per year by switching into this topology .
-
-Only constraint is that you could have peering connections upto 50 for a VPC and could adjusted upto 125 connections but it still gives you the ability to work with 125 different data plane VPCs ( as many different customers in this case )
-
-if the company is scaling too fast and if they feel like they going to exhaust the limits soon they could certainly have a new control plane VPC and as many data plane VPCs. This gives them redundancy and some sort of partioning of their control plane with little to no marginal cost. 
-
-> Transit gateway costs comes in two parts - TGW attachment costs ( billed hourly ) , data transfer costs be between same AZ or inter AZ . Peering does not carry any hourly attachment costs as such .
-
-Peering is also ideal if you want to reference the source security groups from the peered VPC for inbound and outbound security group rules . The peered VPC could be in same account or from a different account sounds great isn't :) 
-
-
-
-The main lesson here is not to be swayed by shiny new services just because they sound exciting and others are using them. Instead of succumbing to FOMO (Fear Of Missing Out), we should approach things from first principles and ask ourselves if the existing solutions already solve the problem effectively. Many times, I've found that the existing solutions are actually ideal for common problems like these.
+In conclusion, the key takeaway is not to be lured by shiny new services just because they seem exciting and popular. Instead, we should assess solutions based on first principles and consider whether existing solutions can effectively address our needs, as they often prove to be ideal for common problems like these.
