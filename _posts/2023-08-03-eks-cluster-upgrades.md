@@ -16,7 +16,7 @@ In this case , EKS vpc had three CIDR ranges attached to it where the managed/se
 
 The main database serving the stateless microservices resides in the same VPC and also few other services such as AWS managed kafka service and few stateless services some are app specific ,rest of them were Kubernetes Add ons which require stateless deployments ( prometheus , elastisearch so on ). Mongo DB atlas services was used via private link extended from its source VPC.
 
-> How would you Upgrade EKS cluster with least possible risk of data loss or downtime of the services ? 
+*** How would you Upgrade EKS cluster with least possible risk of data loss or downtime of the services ?***
 
 If the next step up version does not introduce breaking changes neither does your other control plane add-ons such as service meshes , also neither of them introduces changes which distrupts the combatibility matrices then you could easily upgrade them without any worries after initial tests in the pre-prod environments . 
 
@@ -53,7 +53,7 @@ Following steps were followed in sequence .
 
 steps from 6 to 18 are common to any migration of stateful apps not limited to this scenario detailed here . 
 
-In the end the traffic was fully transferred to the new cluster and the old cluster was taken down when it was confirmed the entire roll out was successful . 
+In the end the traffic was fully transferred to the new cluster and the old cluster was taken down when it was confirmed the entire  roll out was successful . 
 
 
 
