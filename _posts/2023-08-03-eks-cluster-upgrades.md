@@ -38,10 +38,10 @@ Following steps were followed in sequence.
 5. The tricky part is the stateful applications - unlike the stateless applications, you have to come to terms with accepting a small downtime (the main aim is to reduce the risk of the downtimes to a minimum as possible).
 > Due to Amazon EBS constraints, we can't deploy stateful sets in both clusters simultaneously for migration. Amazon EBS volumes can only be mounted on one instance at a time, and the same volumes will be used for the new deployment instantly.
 6. Scale down the stateful set applications to zero replicas.
-7. Get the list of all PVs you are planning to migrate.
+7. Get the list of all Persistent Volumes ( PV) you are planning to migrate.
 8. Find all the corresponding EBS Volumes associated with them.
 9. Snapshot all the EBS Volumes from the previous step (in case something goes wrong).
-10. Patch PersistentVolumes reclaim policy as Retain. This will keep the EBS volume in AWS even if the PV or PVC is accidentally deleted from the cluster.
+10. Patch PersistentVolumes reclaim policy as Retain. This will keep the EBS volume in AWS even if the PV or Persistent Volume Claims ( PVC ) is accidentally deleted from the cluster.
 11. Backup the PV and PVC definitions in a file (which will be used in the new cluster).
 12. Deploy the stateless apps in the new green cluster and also scale them down to zero so nothing is attached to any PVC in the new environment.
 13. Delete the new PVCs that were created for those stateful deployments. This should, in turn, delete the empty PV and EBS Volumes created for the new cluster.
@@ -52,6 +52,8 @@ Following steps were followed in sequence.
 18. Scale stateful apps on the new cluster to its original replica count. It may take a few minutes for the volume to attach to the new node.
 
 Steps from 6 to 18 are common to any migration of stateful apps, not limited to this scenario detailed here.
+
+> important thing to keep in mind is when reusing retained PVs deploying new PV with the same name would not work meaning Deploying a new release with `PVC.spec.volumeName`. This will open up anyone to use retained PVs just by using the same name despite the fact it could contain sensitive ( credit card related details ) , opening up security can of worms . Hence its an admin intervention is required to delete the `PV.Spec.ClaimRef` from the retained PVs or pre-fill `PV.Spec.ClaimRef` with a pointer to the new PVC as explained [here](https://github.com/kubernetes/kubernetes/issues/48609#issuecomment-314066616)
 
 In the end, the traffic was fully transferred to the new cluster, and the old cluster was taken down when it was confirmed that the entire rollout was successful.
 
