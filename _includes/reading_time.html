@@ -1,0 +1,9 @@
+<footer>
+  <div>
+	<a href="{{ post.url | relative_url }}">
+		<span style="color:blueviolet">Reading time: {{ time }} 
+        {%if time > 1 %} mins
+        {% else %}min{% endif %}</span>
+    </a>
+  </div>
+</footer>

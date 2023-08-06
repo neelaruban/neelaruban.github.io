@@ -1,6 +1,9 @@
 ---
 layout: base
 ---
+{% assign words = page.content | strip_html | strip_newlines | remove: " " | size %}
+{% assign time = page.content | strip_html | strip_newlines | remove: " " | size | divided_by: 400 | plus: 1 %}
+
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -23,6 +26,7 @@ layout: base
           {{ mdate | date: date_format }}
         </time>
       {%- endif -%}
+      {% include reading_time.html %}
       {%- if page.author -%}
         • {% for author in page.author %}
           <span itemprop="author" itemscope itemtype="http://schema.org/Person">
