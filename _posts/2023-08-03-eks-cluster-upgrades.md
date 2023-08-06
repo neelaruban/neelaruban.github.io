@@ -53,7 +53,7 @@ Following steps were followed in sequence.
 
 Steps from 6 to 18 are common to any migration of stateful apps, not limited to this scenario detailed here.
 
-> important thing to keep in mind is when reusing retained PVs deploying new PV with the same name would not work meaning Deploying a new release with `PVC.spec.volumeName`. This will open up anyone to use retained PVs just by using the same name despite the fact it could contain sensitive ( credit card related details ) , opening up security can of worms . Hence its an admin intervention is required to delete the `PV.Spec.ClaimRef` from the retained PVs or pre-fill `PV.Spec.ClaimRef` with a pointer to the new PVC as explained [here](https://github.com/kubernetes/kubernetes/issues/48609#issuecomment-314066616)
+> important thing to keep in mind when reusing retained PVs is deploying a new PV with the same name would not work as in deploying a new release with `PVC.spec.volumeName`. This will open up anyone to hijack the PVs by just knowings its name. Hence an admin intervention is required to delete the `PV.Spec.ClaimRef` from the retained PVs or pre-fill `PV.Spec.ClaimRef` with a pointer to the new PVC as explained [here](https://github.com/kubernetes/kubernetes/issues/48609#issuecomment-314066616)
 
 In the end, the traffic was fully transferred to the new cluster, and the old cluster was taken down when it was confirmed that the entire rollout was successful.
 
