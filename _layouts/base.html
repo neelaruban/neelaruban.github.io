@@ -8,15 +8,14 @@
     {%- include header.html -%}
 
     <main class="page-content" aria-label="Content">
-      <div class="float-left">
-        {% include archive.html %}
-      </div> 
       <div class="wrapper">
         {{ content }}
       </div>
+      <div class="float-middle">
+        {% include archive.html %}
+      </div> 
     </main>
     {%- include footer.html -%}
-
   </body>
 
 </html>
