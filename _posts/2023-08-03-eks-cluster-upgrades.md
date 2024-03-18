@@ -16,6 +16,17 @@ When it comes to Kubernetes, some upgrades are straightforward, but some are not
 
 In this case, the EKS VPC had three CIDR ranges attached to it, where the managed/self-managed nodes' primary interfaces would reside, and the rest of the CIDR ranges were dedicated to the pods. This allowed them to operate thousands of pods, each having its own IP from a dedicated VPC range. A public ALB was fronting all the microservices in operation, and it was managed separately, not via the Kubernetes ingress controller (explained to you later why this is important in the particular instance).
 
+### _Initial Design_
+
+The apps managed by the cluster are fronted by an ALB which was separately managed not through the ingress controller which proved to be very good decision to decouple them early on as the same ALB will be used to front the Apps orchestrated by the Cluster 2 within the same VPC .Nowadays , Gateway controller could be used to do the same thing despite having controllers on both clusters talking over the ALB.  
+
+![image]({{ site.baseurl }}/assets/images/wazirx-design.svg)
+
+As a precaution we had to take a full backup of the existing cluster using velero , since we don't want to take a risk of losing out on important data for the stateful apps in the event of total failure . Its always a good practices to expect failures and plan it accordingly . 
+
+### _Velero Backup_
+![image]({{ site.baseurl }}/assets/images/velero-bk.svg)
+
 ***How would you Upgrade EKS cluster with the least possible risk of data loss or downtime of the services?***
 
 If the next step-up version does not introduce breaking changes, nor do your other control plane add-ons, such as service meshes, and if none of them disrupts the compatibility matrices, then you could easily upgrade them without any worries after initial tests in the pre-prod environments.
@@ -30,7 +41,7 @@ The customer already had four IPv4 CIDR blocks attached to the same VPC, which a
 
 Following steps were followed in sequence.
 
-1. Bootstrap the cluster in those new CIDR ranges hitherto not used.
+1. Bootstrap the cluster in those new CIDR ranges attached to the VPC hitherto not used.
 2. Roll out the add-ons and peripheral plugins and validate them if all are working as expected.
 3. Deployment of the stateless apps (make sure the CIDR ranges allocated for the green cluster are whitelisted for the DB connectivity)
 4. Slowly allow the ingress traffic to the green deployment via the ALB (ALB fronting the apps should be able to load balance to the green cluster pods as it's not managed via the Kubernetes ingress controller)
