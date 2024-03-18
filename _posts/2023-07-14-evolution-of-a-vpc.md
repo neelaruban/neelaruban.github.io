@@ -22,7 +22,7 @@ what we proposed was a simple VPC connecting all remote sites via site-to-site V
 ### _Initial Design_
 The below figure illustrates the initial design
 
-![image]({{ site.baseurl }}/assets/images/chrysos-init.svg)
+![image]({{ site.baseurl }}/assets/images/chrysos-init.png)
 
 We could have just used a transit VPC and connected it to the regional data sites and VPCs via site to site VPN via VGW instead of TGW this would have necessitated highly available layer2 VPN appliances to be maintained by the client and a dedicated network engineer to look after it.
 Instance based routing gets costly when its tries to scale up and its constrained by the instance bandwith limitations. 
